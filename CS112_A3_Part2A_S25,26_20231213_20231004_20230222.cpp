@@ -7,6 +7,8 @@ using namespace std;
 
 /*
 This file includes 8 filters to perform on images :
+//////// NOTE : Please note that they aren't the same order like the assignment file //////////////
+
      1: Rotate                  Yousef Okasha     : 20231213
      2: Frame                   Yousef Okasha     : 20231213
      3: Invert                  Yousef Okasha     : 20231213
@@ -17,6 +19,37 @@ This file includes 8 filters to perform on images :
      8: Resize                  Ahmed Al-Hassan   : 20231004
      9: Gray scale              Abdelaziz Mohamed : 20230222
 */
+
+// GitHub repo link : https://github.com/Yusif892/Baby_Photoshop/blob/main/CS112_A3_Part2A_S25%2C26_20231213_20231004_20230222.cpp
+
+
+void grey (Image& IMG)
+{
+    for (int i = 0; i < IMG.width; ++i) 
+    {
+        for (int j = 0; j < IMG.height; ++j) 
+        {
+            int avarege = 0;
+            for (int k = 0; k < 3; ++k)
+            {
+                avarege += IMG(i, j, k); 
+            }
+
+            avarege /= 3;
+            if (avarege > 255)
+            {
+                avarege = 255 ;
+            }
+            else if (avarege < 0)
+            {
+                avarege = 0 ;
+            }
+            IMG(i, j, 0) = avarege;
+            IMG(i, j, 1) = avarege;
+            IMG(i, j, 2) = avarege;
+        }
+    }
+}
 
 void reverse(Image& photo)
 {
@@ -372,6 +405,7 @@ int main()
     cout << "3: Invert                4: Blur      \n " ;
     cout << "5: Black and White       6: Flip       \n ";
     cout << "7: Crop                  8: Resize       \n ";
+    cout << "9: Gray Scale                             \n ";
     cin >> filter ;
 
     // Validating the choice
@@ -381,7 +415,7 @@ int main()
         cin >> filter ;
     }
 
-    if (stoi(filter)>=1 && stoi(filter) <=4)
+    if ((stoi(filter)>=1 && stoi(filter) <=4) || filter == "9")
     {
         cout << "Enter image's name (INCLUDING THE EXTENTION) : ";
         cin >> image_name ;
@@ -520,9 +554,13 @@ int main()
             Image rslt = Blur(Origin) ;
             rslt.saveImage(full_name) ;
         }
-        cout << "Image has been saved successfully\n" ;
+        else if (filter == "9")
+        {
+            grey(Origin) ;
+            Origin.saveImage(full_name);
+        }
+        cout << "\nImage has been saved successfully\n" ;
         cout << "\n====================\n" ;
-        
     }
     else if (stoi(filter) >= 5 && stoi(filter) <=8)
     {
@@ -541,6 +579,7 @@ int main()
             ResultResize();
         }
     }
+    
     string cont ;
     cout << "Continue ?\n" ;
     cout << "1: Continue        2: Exit\n" ;
